@@ -1,0 +1,28 @@
+[package]
+categories = ["gui", "wasm", "web-programming"]
+description = "Template for starting a Yew project using Trunk"
+edition = "2021"
+keywords = ["yew", "trunk"]
+license = "MIT OR Apache-2.0"
+name = "yew-resize-split-view"
+readme = "README.md"
+repository = "https://github.com/yewstack/yew-trunk-minimal-template"
+version = "0.1.0"
+
+[dependencies]
+gloo = "0.8"
+gloo-utils = "0.1"
+log = "0.4"
+stylist = {version = "0.11", features = ["yew_integration", "macros", "parser"]}
+wasm-bindgen = "0.2"
+wasm-logger = "0.2"
+yew = {version = "0.20", features = ["csr"]}
+
+[dependencies.web-sys]
+features = [
+  "Window",
+  "Element",
+  "DomRect",
+  "EventListener",
+]
+version = "0.3"

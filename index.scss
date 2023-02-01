@@ -1,0 +1,21 @@
+body,
+html {
+    height: 100%;
+    margin: 0;
+}
+
+#left_panel {
+    background-color: greenyellow;
+    height: 100vh;
+}
+
+#right_panel {
+    background-color: cyan;
+}
+
+#drag {
+    border-style: none solid none none;
+    border-width: 6px;
+    border-color: red;
+    cursor: col-resize;
+}
