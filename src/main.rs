@@ -24,8 +24,8 @@ pub fn app() -> Html {
         <ResizeSplit
             axis={Axis::Horizontal}
             height={"100%".to_string()}
-            left={top}
-            right={bottom}
+            top={top}
+            bottom={bottom}
         />
     };
     html! {

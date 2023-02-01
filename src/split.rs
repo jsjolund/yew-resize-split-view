@@ -45,10 +45,15 @@ pub struct Props {
     pub axis: Axis,
     #[prop_or_default]
     pub height: Option<String>,
+
     #[prop_or_default]
     pub left: Option<VNode>,
     #[prop_or_default]
     pub right: Option<VNode>,
+    #[prop_or_default]
+    pub top: Option<VNode>,
+    #[prop_or_default]
+    pub bottom: Option<VNode>,
 }
 
 #[function_component]
@@ -242,11 +247,11 @@ pub fn ResizeSplit(props: &Props) -> Html {
         Axis::Horizontal => html! {
             <div ref={container} class={container_css}>
                 <div class={format!("panel {}", left_css.get_class_name())} id="top">
-                    { props.left.clone() }
+                    { props.top.clone() }
                 </div>
                 <div ref={drag} class="drag" style="cursor:row-resize;" id="horizontal"></div>
                 <div class={format!("panel {}", right_css.get_class_name())} id="bottom">
-                    { props.right.clone() }
+                    { props.bottom.clone() }
                 </div>
             </div>
         },
