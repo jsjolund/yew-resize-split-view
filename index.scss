@@ -12,8 +12,23 @@ html {
     background-color: cyan;
 }
 
-#drag_vertical {
-    border-style: none solid none none;
+#top_panel {
+    background-color: yellow;
+}
+
+#bottom_panel {
+    background-color: orange;
+}
+
+.drag {
     border-width: 6px;
     border-color: red;
+}
+
+#drag_vertical {
+    border-style: none solid none none;
+}
+
+#drag_horizontal {
+    border-style: solid none none none;
 }

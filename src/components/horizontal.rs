@@ -9,15 +9,16 @@ use yew::virtual_dom::VNode;
 
 #[derive(Clone, Properties, PartialEq)]
 pub struct Props {
-    pub height: String,
     #[prop_or_default]
-    pub left: VNode,
+    pub height: Option<String>,
     #[prop_or_default]
-    pub right: VNode,
+    pub top: Option<VNode>,
+    #[prop_or_default]
+    pub bottom: Option<VNode>,
 }
 
 #[function_component]
-pub fn VerticalSplit(props: &Props) -> Html {
+pub fn HorizontalSplit(props: &Props) -> Html {
     let container = use_node_ref();
     let drag = use_node_ref();
 
@@ -30,17 +31,22 @@ pub fn VerticalSplit(props: &Props) -> Html {
     let stopped_resizing = use_state(|| false);
     let new_left_width = use_state(|| *left_width.borrow_mut());
 
+    let mut left_style = format!("height:{}%;", *new_left_width);
     let mut right_style = String::from("flex: 1 1 0%;");
-    let mut left_style = format!("height:{}; width: {}%;", props.height, *new_left_width);
+    let mut container_style = String::from("display: flex; flex: 1 1 0%; flex-direction: column;");
 
     if *is_resizing.borrow_mut() {
-        right_style.push_str("user-select:none; pointer-events:none; cursor:col-resize;");
-        left_style.push_str("user-select:none; pointer-events:none; cursor:col-resize;");
+        left_style.push_str("user-select:none; pointer-events:none; cursor:row-resize;");
+        right_style.push_str("user-select:none; pointer-events:none; cursor:row-resize;");
+    }
+    if let Some(height) = &props.height {
+        container_style.push_str(format!("height:{height};").as_str());
     }
 
-    let right_css = Style::new(right_style).expect("Failed to create right style");
     let left_css = Style::new(left_style).expect("Failed to create left style");
-    let drag_css = Style::new("cursor:col-resize;").expect("Failed to create drag style");
+    let right_css = Style::new(right_style).expect("Failed to create right style");
+    let container_css = Style::new(container_style).expect("Failed to create cont. style");
+
     {
         // Create window resize listener
         let container_width = container_width.clone();
@@ -51,7 +57,7 @@ pub fn VerticalSplit(props: &Props) -> Html {
                     .cast::<HtmlElement>()
                     .expect("drag not attached to div element");
                 let listener = EventListener::new(&window(), "mouseup", move |_| {
-                    *container_width.borrow_mut() = div.get_bounding_client_rect().width() as i32;
+                    *container_width.borrow_mut() = div.get_bounding_client_rect().height() as i32;
                 });
                 move || {
                     drop(listener);
@@ -70,7 +76,7 @@ pub fn VerticalSplit(props: &Props) -> Html {
                     .cast::<HtmlElement>()
                     .expect("drag not attached to div element");
                 let listener = EventListener::new(&window(), "resize", move |_| {
-                    *container_width.borrow_mut() = div.get_bounding_client_rect().width() as i32;
+                    *container_width.borrow_mut() = div.get_bounding_client_rect().height() as i32;
                 });
                 move || {
                     drop(listener);
@@ -96,7 +102,7 @@ pub fn VerticalSplit(props: &Props) -> Html {
                     Closure::<dyn Fn(MouseEvent)>::wrap(Box::new(move |ev: MouseEvent| {
                         *x.borrow_mut() = ev.client_x();
                         *y.borrow_mut() = ev.client_y();
-                        *left_width.borrow_mut() = left_side.get_bounding_client_rect().width();
+                        *left_width.borrow_mut() = left_side.get_bounding_client_rect().height();
                         *is_resizing.borrow_mut() = true;
                     }));
                 div.add_event_listener_with_callback(
@@ -121,14 +127,14 @@ pub fn VerticalSplit(props: &Props) -> Html {
                     .cast::<HtmlElement>()
                     .expect("container not attached to div element");
                 if *container_width.borrow_mut() == 0 {
-                    *container_width.borrow_mut() = div.get_bounding_client_rect().width() as i32;
+                    *container_width.borrow_mut() = div.get_bounding_client_rect().height() as i32;
                 }
                 let listener =
                     Closure::<dyn Fn(MouseEvent)>::wrap(Box::new(move |ev: MouseEvent| {
                         if *is_resizing.borrow_mut() {
-                            let dx = ev.client_x() - *x.borrow_mut();
-                            let _dy = ev.client_y() - *y.borrow_mut();
-                            let w = ((*left_width.borrow_mut() + dx as f64) * 100.0)
+                            let _dx = ev.client_x() - *x.borrow_mut();
+                            let dy = ev.client_y() - *y.borrow_mut();
+                            let w = ((*left_width.borrow_mut() + dy as f64) * 100.0)
                                 / *container_width.borrow_mut() as f64;
                             new_left_width.set(w);
                         }
@@ -167,13 +173,13 @@ pub fn VerticalSplit(props: &Props) -> Html {
         );
     }
     html! {
-        <div ref={container} class="container" style="display: flex;">
-            <div class={left_css} id="left_panel">
-            { props.left.clone() }
+        <div ref={container} class={container_css}>
+            <div class={left_css} id="top_panel">
+                { props.top.clone() }
             </div>
-            <div ref={drag} class={drag_css} id="drag_vertical"></div>
-            <div class={right_css} id="right_panel">
-            { props.right.clone() }
+            <div ref={drag} class="drag" style="cursor:row-resize;" id="drag_horizontal"></div>
+            <div class={right_css} id="bottom_panel">
+                { props.bottom.clone() }
             </div>
         </div>
     }

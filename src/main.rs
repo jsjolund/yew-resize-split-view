@@ -1,26 +1,36 @@
-mod vertical;
-
-use vertical::VerticalSplit;
 use yew::{function_component, html, Html};
+
+use crate::components::{horizontal::HorizontalSplit, vertical::VerticalSplit};
+
+mod components;
 
 #[function_component(App)]
 pub fn app() -> Html {
-    let left1 = html! {"left1"};
-    let right1 = html! {"right"};
+    let left = html! {"left"};
+    let top = html! {"top"};
+    let bottom1 = html! {"bottom1"};
+    let bottom2 = html! {"bottom2"};
 
-    let left0 = html! {"left0"};
-    let right0 = html! {
+    let bottom = html! {
         <VerticalSplit
-            height={"100vh".to_string()}
-            left={left1}
-            right={right1}
+            height={"100%".to_string()}
+            left={bottom1}
+            right={bottom2}
+        />
+    };
+
+    let right = html! {
+        <HorizontalSplit
+            height={"100%".to_string()}
+            top={top}
+            bottom={bottom}
         />
     };
     html! {
         <VerticalSplit
             height={"100vh".to_string()}
-            left={left0}
-            right={right0}
+            left={left}
+            right={right}
         />
     }
 }
