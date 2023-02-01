@@ -1,33 +1,36 @@
+use lipsum::lipsum;
 use yew::{function_component, html, Html};
 
-use crate::components::{horizontal::HorizontalSplit, vertical::VerticalSplit};
+use crate::split::{Axis, ResizeSplit};
 
-mod components;
+mod split;
 
 #[function_component(App)]
 pub fn app() -> Html {
-    let left = html! {"left"};
-    let top = html! {"top"};
-    let bottom1 = html! {"bottom1"};
-    let bottom2 = html! {"bottom2"};
+    let left = html! {<><h1>{"left"}</h1><p>{lipsum(7000)}</p></>};
+    let top = html! {<><h1>{"top"}</h1><p>{lipsum(700)}</p></>};
+    let bottom1 = html! {<><h1>{"bottom1"}</h1><p>{lipsum(70)}</p></>};
+    let bottom2 = html! {<><h1>{"bottom2"}</h1><p>{lipsum(7000)}</p></>};
 
     let bottom = html! {
-        <VerticalSplit
+        <ResizeSplit
+            axis={Axis::Vertical}
             height={"100%".to_string()}
             left={bottom1}
             right={bottom2}
         />
     };
-
     let right = html! {
-        <HorizontalSplit
+        <ResizeSplit
+            axis={Axis::Horizontal}
             height={"100%".to_string()}
-            top={top}
-            bottom={bottom}
+            left={top}
+            right={bottom}
         />
     };
     html! {
-        <VerticalSplit
+        <ResizeSplit
+            axis={Axis::Vertical}
             height={"100vh".to_string()}
             left={left}
             right={right}

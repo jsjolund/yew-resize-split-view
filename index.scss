@@ -4,19 +4,28 @@ html {
     margin: 0;
 }
 
-#left_panel {
+.panel {
+    overflow-y: scroll;
+}
+
+.panel p,
+h1 {
+    margin: 1em;
+}
+
+div#left.panel {
     background-color: greenyellow;
 }
 
-#right_panel {
+div#right.panel {
     background-color: cyan;
 }
 
-#top_panel {
+div#top.panel {
     background-color: yellow;
 }
 
-#bottom_panel {
+div#bottom.panel {
     background-color: orange;
 }
 
@@ -25,10 +34,10 @@ html {
     border-color: red;
 }
 
-#drag_vertical {
+div#vertical.drag {
     border-style: none solid none none;
 }
 
-#drag_horizontal {
+div#horizontal.drag {
     border-style: solid none none none;
 }
